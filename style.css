@@ -1,8 +1,7 @@
 :root {
-  --primary-pink: #ff758c;
-  --secondary-pink: #ffafbd;
-  --text-color: #d81b60;
-  --white: #ffffff;
+  --pink: #ff758c;
+  --deep-pink: #d4106f;
+  --gold: #ffd700;
 }
 
 * {
@@ -12,102 +11,562 @@
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: "Quicksand", sans-serif;
   overflow: hidden;
-  background: linear-gradient(-45deg, #ffafbd, #ffc3a0, #ee9ca7, #ffdde1);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(
+    145deg,
+    #12002a 0%,
+    #3a004e 25%,
+    #700060 55%,
+    #c01055 82%,
+    #ff4070 100%
+  );
 }
 
-@keyframes gradientBG {
+/* ========== STARS CANVAS ========== */
+#stars-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========== FALLING PETALS ========== */
+#petals-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  top: -60px;
+  animation: petalFall linear forwards;
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes petalFall {
   0% {
+    transform: translateY(0) rotate(0deg) translateX(0);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translateY(25vh) rotate(90deg) translateX(18px);
+  }
+  50% {
+    transform: translateY(50vh) rotate(180deg) translateX(-18px);
+  }
+  75% {
+    transform: translateY(75vh) rotate(270deg) translateX(12px);
+  }
+  100% {
+    transform: translateY(115vh) rotate(400deg) translateX(0);
+    opacity: 0;
+  }
+}
+
+/* ========== MUSIC BUTTON ========== */
+#music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+#music-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 215, 0, 0.5);
+  transform: scale(1.1) rotate(12deg);
+}
+
+#music-btn.off {
+  opacity: 0.4;
+}
+
+/* ========== CONTAINER ========== */
+.container {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+/* ========== GIFT SECTION ========== */
+.gift-section {
+  cursor: pointer;
+}
+
+.gift-float {
+  display: inline-block;
+  position: relative;
+  animation: floatUp 3s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Glowing aura behind gift */
+.gift-float::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -54%);
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 117, 140, 0.4),
+    transparent 68%
+  );
+  animation: auraGlow 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes auraGlow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -54%) scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translate(-50%, -54%) scale(1.25);
+  }
+}
+
+/* Gift box */
+.gift-box {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  margin: 0 auto;
+  filter: drop-shadow(0 18px 35px rgba(170, 0, 79, 0.65));
+  transition: filter 0.3s;
+}
+
+.gift-section:hover .gift-box {
+  filter: drop-shadow(0 22px 45px rgba(212, 16, 111, 0.85))
+    brightness(1.1);
+}
+
+/* Box body wrapper (for clip + shine) */
+.gift-body {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(145deg, #ff9ab5 0%, #ff5c8d 45%, #e0006b 100%);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 0 #9a0048, inset 12px 0 25px rgba(255, 255, 255, 0.06),
+    inset -12px 0 25px rgba(0, 0, 0, 0.1);
+}
+
+.ribbon {
+  position: absolute;
+  background: linear-gradient(135deg, #fff8d0, #ffd700, #ffaa00);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
+  z-index: 1;
+}
+
+.ribbon-v {
+  width: 22px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+
+.ribbon-h {
+  height: 22px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 3px;
+}
+
+/* Shine sweep */
+.shine {
+  position: absolute;
+  top: -50%;
+  left: -70%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: shineSweep 4s ease-in-out infinite 0.8s;
+  z-index: 2;
+}
+
+@keyframes shineSweep {
+  0%,
+  30% {
+    left: -70%;
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    left: 140%;
+    opacity: 0;
+  }
+}
+
+/* Gold bow */
+.bow {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 74px;
+  height: 46px;
+  z-index: 3;
+}
+
+.bow::before,
+.bow::after {
+  content: "";
+  position: absolute;
+  width: 33px;
+  height: 27px;
+  background: linear-gradient(135deg, #ffe870, #ffc800, #ff9f00);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.75);
+  border-radius: 50% 0;
+  top: 9px;
+}
+
+.bow::before {
+  left: 2px;
+  transform: rotate(-42deg);
+  transform-origin: right bottom;
+}
+
+.bow::after {
+  right: 2px;
+  transform: rotate(42deg) scaleX(-1);
+  transform-origin: left bottom;
+}
+
+.bow-knot {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 38% 32%, #fff3a0, #ffd700, #ff9500);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.9);
+}
+
+/* Shadow glow below box */
+.gift-glow {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 20px;
+  background: radial-gradient(
+    ellipse,
+    rgba(212, 16, 111, 0.55) 0%,
+    transparent 70%
+  );
+  filter: blur(6px);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateX(-50%) scaleX(0.65);
+  }
+}
+
+.click-hint {
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 25px rgba(255, 117, 140, 0.9);
+  animation: hintPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.04);
+  }
+}
+
+/* ========== CARD SECTION ========== */
+.card {
+  display: none;
+  background: rgba(255, 248, 252, 0.97);
+  border-radius: 28px;
+  padding: 36px 34px 30px;
+  max-width: 400px;
+  width: 90vw;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 117, 140, 0.25),
+    0 0 80px rgba(212, 16, 111, 0.2);
+}
+
+.card.open {
+  display: block;
+  animation: cardReveal 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes cardReveal {
+  from {
+    transform: scale(0.05) rotate(-12deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.card-date {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff758c, #d4106f);
+  color: white;
+  font-family: "Dancing Script", cursive;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  padding: 5px 28px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(212, 16, 111, 0.4);
+}
+
+.card-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.7rem;
+  line-height: 1.15;
+  margin-bottom: 22px;
+  background: linear-gradient(135deg, #d4106f 0%, #8b0f6e 50%, #d4106f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleShimmer 3s ease-in-out infinite;
+  background-size: 200%;
+}
+
+@keyframes titleShimmer {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
     background-position: 100% 50%;
   }
-  100% {
-    background-position: 0% 50%;
+}
+
+/* Messages */
+.messages {
+  min-height: 135px;
+  margin-bottom: 16px;
+}
+
+.msg {
+  display: none;
+  animation: msgAppear 0.45s ease;
+}
+
+.msg.active {
+  display: block;
+}
+
+@keyframes msgAppear {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.container {
-  text-align: center;
-  z-index: 10;
-  position: relative;
-}
-
-/* Hộp quà */
-.gift-container {
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.gift-container:hover {
-  transform: scale(1.1);
-}
-
-.gift-box {
-  width: 140px;
-  height: 140px;
-  background: var(--primary-pink);
-  position: relative;
-  margin: 0 auto;
-  border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(216, 27, 96, 0.2);
-}
-
-.ribbon-v {
-  position: absolute;
-  width: 25px;
-  height: 100%;
-  background: var(--white);
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.ribbon-h {
-  position: absolute;
-  width: 100%;
-  height: 25px;
-  background: var(--white);
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.click-text {
-  margin-top: 25px;
-  color: var(--white);
-  font-weight: 600;
-  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
-  animation: blink 1.5s infinite;
-}
-
-/* Tấm thiệp */
-.card {
-  display: none;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 50px 30px;
-  border-radius: 40px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
-  max-width: 350px;
-  transform: scale(0);
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 8px solid var(--white);
-}
-
-.card.show {
+.msg-icon {
+  font-size: 2.5rem;
   display: block;
-  transform: scale(1);
+  margin-bottom: 10px;
+  animation: iconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card h1 {
-  font-family: "Dancing Script", cursive;
-  color: var(--text-color);
-  font-size: 2.8rem;
-  margin-bottom: 20px;
+@keyframes iconPop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.msg p {
+  color: #555;
+  font-size: 0.97rem;
+  line-height: 1.8;
+}
+
+.msg p strong {
+  color: var(--deep-pink);
+  font-weight: 700;
+}
+
+.msg p em {
+  color: var(--deep-pink);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Dot navigation */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(212, 16, 111, 0.18);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid rgba(212, 16, 111, 0.25);
+}
+
+.dot.active {
+  background: var(--deep-pink);
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(212, 16, 111, 0.5);
+  border-color: var(--deep-pink);
+}
+
+.dot:hover:not(.active) {
+  background: rgba(212, 16, 111, 0.35);
+}
+
+/* Card footer */
+.card-footer {
+  border-top: 1px solid rgba(212, 16, 111, 0.12);
+  padding-top: 18px;
+}
+
+.roses {
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  animation: roseWave 3s ease-in-out infinite;
+}
+
+@keyframes roseWave {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  70% {
+    transform: translateX(5px);
+  }
+}
+
+.sig {
+  color: #bbb;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 480px) {
+  .gift-box,
+  .gift-body {
+    width: 130px;
+    height: 130px;
+  }
+
+  .card {
+    padding: 28px 22px 24px;
+  }
+
+  .card-title {
+    font-size: 2.1rem;
+  }
+
+  .click-hint {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .card {
+    padding: 20px 26px;
+  }
+
+  .messages {
+    min-height: 110px;
+  }
+
+  .card-title {
+    font-size: 2rem;
+    margin-bottom: 14px;
+  }
 }

@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mừng Ngày Quốc Tế Phụ Nữ 8/3</title>
+    <title>Mừng Ngày Quốc Tế Phụ Nữ 8/3 💐</title>
 
     <link
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <canvas id="stars-canvas"></canvas>
+    <div id="petals-container"></div>
+
+    <button id="music-btn" title="Bật/tắt nhạc">🎵</button>
     <audio id="bgMusic" loop>
       <source
         src="https://www.bensound.com/bensound-music/bensound-love.mp3"
@@ -21,24 +25,71 @@
       />
     </audio>
 
-    <div id="flower-container"></div>
-
     <div class="container">
-      <div id="gift-section" class="gift-container">
-        <div class="gift-box">
-          <div class="ribbon-v"></div>
-          <div class="ribbon-h"></div>
+      <!-- Gift Section -->
+      <div id="gift-section" class="gift-section">
+        <div class="gift-float">
+          <div class="gift-box">
+            <div class="gift-body">
+              <div class="ribbon ribbon-v"></div>
+              <div class="ribbon ribbon-h"></div>
+              <div class="shine"></div>
+            </div>
+            <div class="bow"><div class="bow-knot"></div></div>
+          </div>
+          <div class="gift-glow"></div>
         </div>
-        <p class="click-text">Chạm vào món quà dành cho bạn ✨</p>
+        <p class="click-hint">✨ Chạm vào món quà dành cho bạn ✨</p>
       </div>
 
+      <!-- Card Section -->
       <div id="card-section" class="card">
-        <h1>Happy Women's Day!</h1>
-        <p>
-          Chúc <strong>người phụ nữ tuyệt vời</strong> một ngày 8/3 thật rực rỡ,
-          hạnh phúc và luôn tràn đầy yêu thương.
-        </p>
-        <div class="rose-icon">🌹🌷🌸</div>
+        <div class="card-date">8 / 3</div>
+        <h1 class="card-title">Happy Women's Day!</h1>
+
+        <div class="messages">
+          <div class="msg active">
+            <div class="msg-icon">💐</div>
+            <p>
+              Chúc <strong>người phụ nữ tuyệt vời</strong> một ngày 8/3 thật
+              rực rỡ, ngập tràn hạnh phúc và luôn được yêu thương xứng đáng!
+            </p>
+          </div>
+          <div class="msg">
+            <div class="msg-icon">🌹</div>
+            <p>
+              Hoa hồng sẽ héo sau vài ngày. Nhưng sự duyên dáng của bạn thì...
+              <em>không có hạn sử dụng!</em> 😄
+            </p>
+          </div>
+          <div class="msg">
+            <div class="msg-icon">✨</div>
+            <p>
+              Einstein mất cả đời tìm ra thuyết tương đối. Bạn chỉ cần mỉm
+              cười là mọi thứ đã
+              <em>tươi sáng hơn rất nhiều!</em>
+            </p>
+          </div>
+          <div class="msg">
+            <div class="msg-icon">💫</div>
+            <p>
+              Bạn không cần siêu năng lực để phi thường —
+              <em>mỗi ngày là chính mình đã là điều kỳ diệu rồi!</em>
+            </p>
+          </div>
+        </div>
+
+        <div class="dots">
+          <span class="dot active" data-to="0"></span>
+          <span class="dot" data-to="1"></span>
+          <span class="dot" data-to="2"></span>
+          <span class="dot" data-to="3"></span>
+        </div>
+
+        <div class="card-footer">
+          <div class="roses">🌹 🌷 🌸 💖 🌸 🌷 🌹</div>
+          <p class="sig">Luôn yêu thương bạn 💕</p>
+        </div>
       </div>
     </div>
 
