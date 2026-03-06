@@ -1,0 +1,113 @@
+:root {
+  --primary-pink: #ff758c;
+  --secondary-pink: #ffafbd;
+  --text-color: #d81b60;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Quicksand", sans-serif;
+  overflow: hidden;
+  background: linear-gradient(-45deg, #ffafbd, #ffc3a0, #ee9ca7, #ffdde1);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* Hộp quà */
+.gift-container {
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gift-container:hover {
+  transform: scale(1.1);
+}
+
+.gift-box {
+  width: 140px;
+  height: 140px;
+  background: var(--primary-pink);
+  position: relative;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(216, 27, 96, 0.2);
+}
+
+.ribbon-v {
+  position: absolute;
+  width: 25px;
+  height: 100%;
+  background: var(--white);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ribbon-h {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  background: var(--white);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.click-text {
+  margin-top: 25px;
+  color: var(--white);
+  font-weight: 600;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  animation: blink 1.5s infinite;
+}
+
+/* Tấm thiệp */
+.card {
+  display: none;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px 30px;
+  border-radius: 40px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+  max-width: 350px;
+  transform: scale(0);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 8px solid var(--white);
+}
+
+.card.show {
+  display: block;
+  transform: scale(1);
+}
+
+.card h1 {
+  font-family: "Dancing Script", cursive;
+  color: var(--text-color);
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+}
