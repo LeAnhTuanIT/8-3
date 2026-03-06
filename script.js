@@ -107,31 +107,91 @@ musicBtn.addEventListener("click", () => {
   musicOn = !musicOn;
 });
 
-// ========== MESSAGE ROTATION ==========
-const msgs = Array.from(document.querySelectorAll(".msg"));
-const dots = Array.from(document.querySelectorAll(".dot"));
-let current = 0;
-let autoTimer = null;
+// ========== MESSAGE DATA ==========
+const messageData = {
+  friend: [
+    { icon: "😎", text: "Hôm nay là ngày của mày! Tao biết mày ghét lời sáo rỗng nên chỉ nói gọn: <em>mày xịn lắm đó!</em> 🔥" },
+    { icon: "🤣", text: "Cảm ơn vì đã nghe tao than thở không charge phí. Chúc mày 8/3 <em>không có gì để than</em> nhé! 😄" },
+    { icon: "💪", text: "Mày mạnh mẽ, thông minh, duyên dáng — và may mắn vì có <strong>tao</strong> làm bạn! Chúc 8/3 vui 😄" },
+    { icon: "✨", text: "Chúc bạn thân mãi vui vẻ, mãi trẻ đẹp — và mãi <em>chịu chơi với tao</em>! 🌈" },
+    { icon: "☕", text: "8/3 chúc mày: làm gì cũng thành, yêu ai cũng được đáp lại, cà phê <em>không bao giờ nguội</em>! ☕" },
+    { icon: "🌺", text: "Bạn không cần ngày 8/3 để biết mình đặc biệt — nhưng hôm nay <em>tao nhắc mày thêm lần nữa</em> đó! 🌺" },
+    { icon: "🦋", text: "Nhớ hồi xưa mày hay nói 'tao bình thường thôi'. Giờ nhìn lại — <em>mày có biết mày ngầu thế nào không?!</em> 😤" },
+  ],
+  colleague: [
+    { icon: "💼", text: "Chúc đồng nghiệp 8/3 vui: <em>inbox nhẹ, meeting ít</em>, deadline vẫn là deadline nhưng tinh thần thì ok!" },
+    { icon: "☕", text: "Cảm ơn vì mỗi ngày cùng chiến đấu với công việc. Bạn làm cả team <em>bớt loạn</em> đi nhiều lắm! 😄" },
+    { icon: "🏆", text: "Người phụ nữ giỏi nhất team — tôi nghĩ vậy mọi ngày, <em>hôm nay mới nhớ gõ ra thôi</em> 😅 Chúc 8/3!" },
+    { icon: "🌟", text: "Chúc bạn: làm việc vui, <em>lương tăng nhanh</em>, sếp hiền và có người mang cà phê lên tận bàn! ✨" },
+    { icon: "🎯", text: "Ở công ty may mắn có bạn — người luôn làm việc nhóm <em>bớt... nhóm</em>. Chúc 8/3 nhiều năng lượng!" },
+    { icon: "🌸", text: "Bạn chứng minh mỗi ngày: phụ nữ có thể làm tốt mọi thứ — kể cả <em>chịu đựng tôi</em>. Cảm ơn và chúc 8/3! 😄" },
+    { icon: "🚀", text: "Công việc có lúc loạn, deadline có lúc căng — nhưng may mắn là có bạn trong team. <em>Cảm ơn vì không bỏ cuộc!</em>" },
+  ],
+  family: [
+    { icon: "❤️", text: "Cảm ơn vì sự hi sinh thầm lặng, những bữa cơm ấm áp, những lần chăm sóc không cần ai nói lời cảm ơn. <em>Con/Em yêu!</em>" },
+    { icon: "🌸", text: "Chúc mẹ/chị ngày 8/3: sức khỏe dồi dào, <em>luôn được yêu thương</em> xứng đáng với tất cả những gì đã cho đi." },
+    { icon: "💖", text: "Bạn là người phụ nữ phi thường trong cuộc đời tôi. <em>Mỗi ngày bạn là chính mình đã là điều kỳ diệu</em>!" },
+    { icon: "🌺", text: "8/3 nhắc tôi nói ra điều tôi cảm nhận mỗi ngày: <em>bạn là điểm tựa của cả gia đình</em>. Cảm ơn vì luôn ở đó!" },
+    { icon: "🌙", text: "Chúc người phụ nữ tôi yêu thương nhất: luôn mạnh mẽ, hạnh phúc và biết rằng <em>luôn có người yêu thương bạn vô điều kiện</em>!" },
+    { icon: "🌼", text: "Không cần ngày đặc biệt để nhớ bạn quan trọng thế nào — nhưng hôm nay 8/3, <em>tôi muốn nói to lên</em>: Con/Em yêu bạn!" },
+    { icon: "🫂", text: "Bạn đã dạy tôi cách yêu thương, kiên nhẫn và mạnh mẽ — chỉ bằng cách <em>sống như bạn vẫn sống mỗi ngày</em>. Cảm ơn!" },
+  ],
+};
 
-function goTo(idx) {
-  msgs[current].classList.remove("active");
-  dots[current].classList.remove("active");
-  current = idx;
-  msgs[current].classList.add("active");
-  dots[current].classList.add("active");
+// ========== MESSAGE SYSTEM ==========
+let currentCat = "friend";
+const shownIndices = { friend: [], colleague: [], family: [] };
+
+const msgIcon = document.getElementById("msg-icon");
+const msgText = document.getElementById("msg-text");
+const messageDisplay = document.getElementById("message-display");
+
+function getRandomMsg(cat) {
+  const msgs = messageData[cat];
+  let available = msgs.map((_, i) => i).filter((i) => !shownIndices[cat].includes(i));
+  if (available.length === 0) {
+    shownIndices[cat] = [];
+    available = msgs.map((_, i) => i);
+  }
+  const idx = available[Math.floor(Math.random() * available.length)];
+  shownIndices[cat].push(idx);
+  return msgs[idx];
 }
 
-function startAuto() {
-  autoTimer = setInterval(() => goTo((current + 1) % msgs.length), 3800);
+function showMsg(cat) {
+  const msg = getRandomMsg(cat);
+  // Trigger re-animation
+  messageDisplay.classList.remove("pop");
+  void messageDisplay.offsetWidth;
+  messageDisplay.classList.add("pop");
+  msgIcon.textContent = msg.icon;
+  msgText.innerHTML = msg.text;
 }
 
-dots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    clearInterval(autoTimer);
-    goTo(parseInt(dot.dataset.to));
-    startAuto();
+// Category buttons
+document.querySelectorAll(".cat-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".cat-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentCat = btn.dataset.cat;
+    showMsg(currentCat);
   });
 });
+
+// Shuffle button
+document.getElementById("shuffle-btn").addEventListener("click", () => {
+  showMsg(currentCat);
+});
+
+// Swipe support (mobile)
+let touchStartX = 0;
+messageDisplay.addEventListener("touchstart", (e) => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+messageDisplay.addEventListener("touchend", (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) showMsg(currentCat);
+}, { passive: true });
 
 // ========== GIFT CLICK ==========
 const giftSection = document.getElementById("gift-section");
@@ -172,7 +232,7 @@ giftSection.addEventListener("click", function () {
   setTimeout(() => {
     giftSection.style.display = "none";
     cardSection.classList.add("open");
-    startAuto();
+    showMsg(currentCat);
   }, 560);
 });
 

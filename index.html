@@ -47,44 +47,22 @@
         <div class="card-date">8 / 3</div>
         <h1 class="card-title">Happy Women's Day!</h1>
 
-        <div class="messages">
-          <div class="msg active">
-            <div class="msg-icon">💐</div>
-            <p>
-              Chúc <strong>người phụ nữ tuyệt vời</strong> một ngày 8/3 thật
-              rực rỡ, ngập tràn hạnh phúc và luôn được yêu thương xứng đáng!
-            </p>
-          </div>
-          <div class="msg">
-            <div class="msg-icon">🌹</div>
-            <p>
-              Hoa hồng sẽ héo sau vài ngày. Nhưng sự duyên dáng của bạn thì...
-              <em>không có hạn sử dụng!</em> 😄
-            </p>
-          </div>
-          <div class="msg">
-            <div class="msg-icon">✨</div>
-            <p>
-              Einstein mất cả đời tìm ra thuyết tương đối. Bạn chỉ cần mỉm
-              cười là mọi thứ đã
-              <em>tươi sáng hơn rất nhiều!</em>
-            </p>
-          </div>
-          <div class="msg">
-            <div class="msg-icon">💫</div>
-            <p>
-              Bạn không cần siêu năng lực để phi thường —
-              <em>mỗi ngày là chính mình đã là điều kỳ diệu rồi!</em>
-            </p>
-          </div>
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+          <button class="cat-btn active" data-cat="friend">👭 Bạn bè</button>
+          <button class="cat-btn" data-cat="colleague">💼 Đồng nghiệp</button>
+          <button class="cat-btn" data-cat="family">❤️ Người thân</button>
         </div>
 
-        <div class="dots">
-          <span class="dot active" data-to="0"></span>
-          <span class="dot" data-to="1"></span>
-          <span class="dot" data-to="2"></span>
-          <span class="dot" data-to="3"></span>
+        <!-- Message Display -->
+        <div class="message-display" id="message-display">
+          <span class="msg-icon" id="msg-icon"></span>
+          <p id="msg-text"></p>
+          <p class="swipe-tip">← vuốt để đổi câu →</p>
         </div>
+
+        <!-- Shuffle Button -->
+        <button class="shuffle-btn" id="shuffle-btn">✨ Câu chúc khác</button>
 
         <div class="card-footer">
           <div class="roses">🌹 🌷 🌸 💖 🌸 🌷 🌹</div>
